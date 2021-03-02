@@ -1,0 +1,77 @@
+server:
+  port: 8080
+  servlet.context-path: /sales/v1
+
+# Microservice Configuration
+spring:
+  application:
+    name: Sales
+
+  # MySQL Database Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC
+    username: root
+    password: root
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    properties.hibernate.show_sql: false
+    open-in-view: false
+
+# # Postgres Database Configuration
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/test
+#    username: root
+#    password: root
+#  jpa:
+#    properties.hibernate.default_schema: public
+#    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+#    properties.hibernate.show_sql: false
+#    open-in-view: false
+
+#  flyway:
+#    location: classpath:db/migration
+#    enabled: true
+#    driver: com.mysql.cj.jdbc.Driver
+#    schemas: cv_load_manager_service
+#    sql-migration-prefix: V
+#    baseline-on-migrate: true
+#    initialVersion: 0.0.0.0
+#    url: {}
+#    username: {}
+#    password: {}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include=*:
+
+Sales:
+  resource:
+    version: /v1
+    endpoint1: {}
+    endpoint2: {}
+
+  error:
+    codes:
+      400: "Generic Bad Request Error"
+      400-01: "First Custom Bad Request Error"
+      404: "Generic Not Found Error"
+      404-01: "First Custom Not Found Error"
+      404-02: "First Custom Not Found Error"
+      500: "Generic Internal Error"
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000
+
+Admin:
+  server:
+    name: Admin
+    url: {}
+  resource:
+    endpoint1: {}
+    endpoint2: {}

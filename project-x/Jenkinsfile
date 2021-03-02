@@ -1,0 +1,6 @@
+@Library('build-pipelines') _
+
+def APP = "Sales"
+def PROJECT = "default"
+
+buildSpringBoot(APP, PROJECT)

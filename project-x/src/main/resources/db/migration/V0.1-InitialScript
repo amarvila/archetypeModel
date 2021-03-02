@@ -1,0 +1,12 @@
+CREATE TABLE `archetypetest`.`entity` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`code` VARCHAR(45),
+`description` VARCHAR(45),
+`create_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`update_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY (`id`));
+
+insert into archetypetest.entity (id, code, description, create_date, update_date)
+VALUES (1,'Pedro','Los Santos','2020-04-23 01:00:00.00','2020-04-23 01:00:00.00');
+insert into archetypetest.entity (id, code, description, create_date, update_date)
+VALUES (2,'Bibliana','Del Rocio','2020-04-28 10:00:00.00','2020-04-28 10:00:00.00');

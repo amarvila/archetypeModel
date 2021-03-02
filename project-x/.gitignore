@@ -1,0 +1,9 @@
+target
+bin
+*.iml
+.settings
+.project
+.classpath
+.idea
+.sts4-cache
+projectStructure.pdf
