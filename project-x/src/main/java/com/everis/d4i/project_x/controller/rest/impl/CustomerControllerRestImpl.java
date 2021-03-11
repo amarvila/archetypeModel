@@ -1,6 +1,7 @@
 
 package com.everis.d4i.project_x.controller.rest.impl;
 
+import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,8 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +50,7 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
-    public SalesResponse<PagedModel<EntityModel<CustomerRest>>> getAllCustomers(
+    public SalesResponse<D4iPageRest<CustomerRest>> getAllCustomers(
       @RequestParam(defaultValue = CommonConstantsUtils.ZERO) final int page,
 	    @RequestParam(defaultValue = CommonConstantsUtils.TWENTY) final int size, 
       @Parameter(hidden = true) final Pageable pageable,

@@ -1,12 +1,12 @@
 package com.everis.d4i.project_x.service.impl;
 
+import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
+import com.everis.d4i.project_x.controller.rest.model.D4iPaginationInfo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
 import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
@@ -28,11 +28,14 @@ public class CustomerServiceImpl implements CustomerService {
     private ModelMapper modelMapper;
 
     @Override
-    public PagedModel<EntityModel<CustomerRest>> getAllCustomers(final Pageable pageable,
-	    final PagedResourcesAssembler<CustomerRest> assembler) throws SalesException {
+    public D4iPageRest<CustomerRest> getAllCustomers(final Pageable pageable,
+                                                     final PagedResourcesAssembler<CustomerRest> assembler) throws SalesException {
 	Page<CustomerEntity> customerPage = customerRepository.findAll(pageable);
 	Page<CustomerRest> customerRestList = customerPage.map(customer -> modelMapper.map(customer, CustomerRest.class));
-	return assembler.toModel(customerRestList);
+	return new D4iPageRest<>(customerRestList.getContent().toArray(CustomerRest[]::new),
+                             new D4iPaginationInfo(customerRestList.getNumber(),
+                                                   pageable.getPageSize(),
+                                                   customerRestList.getTotalPages()));
     }
 
     @Override
