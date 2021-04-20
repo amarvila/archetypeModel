@@ -7,6 +7,7 @@ import static org.mockito.Matchers.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +73,7 @@ public class CustomerServiceImplTest {
 		Page<CustomerEntity> customerPage = new PageImpl<>(List.of(CUSTOMER_ENTITY), pageable, 0);
 		Mockito.when(customerRepository.findAll(any(Pageable.class))).thenReturn(customerPage);
 
-		PagedModel<EntityModel<CustomerRest>> pagedModel = customerService.getAllCustomers(pageable, assembler);
+		D4iPageRest<CustomerRest> pagedModel = customerService.getAllCustomers(pageable, assembler);
 
 		assertNotNull(pagedModel);
     }

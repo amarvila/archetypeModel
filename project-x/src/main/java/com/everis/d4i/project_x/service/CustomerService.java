@@ -1,5 +1,6 @@
 package com.everis.d4i.project_x.service;
 
+import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -10,7 +11,7 @@ import com.everis.d4i.project_x.exception.SalesException;
 
 public interface CustomerService {
 
-    PagedModel<EntityModel<CustomerRest>> getAllCustomers(Pageable pageable, PagedResourcesAssembler<CustomerRest> assembler)
+    D4iPageRest<CustomerRest> getAllCustomers(Pageable pageable, PagedResourcesAssembler<CustomerRest> assembler)
 	    throws SalesException;
 
     CustomerRest createCustomer(CustomerRest Customer) throws SalesException;

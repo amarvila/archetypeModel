@@ -8,6 +8,8 @@ import static org.mockito.Matchers.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
+import com.everis.d4i.project_x.controller.rest.model.D4iPaginationInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +59,7 @@ public class CustomerControllerRestImplTest {
 		// given
 		int page = 0;
 		int size = 2;
+		int pageNumber = 1;
 		Pageable pageable = PageRequest.of(page, size);
 		HateoasPageableHandlerMethodArgumentResolver resolver = new HateoasPageableHandlerMethodArgumentResolver();
 		PagedResourcesAssembler<CustomerRest> assembler = new PagedResourcesAssembler<>(resolver, null);
@@ -64,18 +67,16 @@ public class CustomerControllerRestImplTest {
 		CustomerRest customerRest2 = new CustomerRest();
 		customerRest2.setId(2L);
 
-		EntityModel<CustomerRest> customerEntityModel1 = new EntityModel<>(CUSTOMER_REST);
-		EntityModel<CustomerRest> customerEntityModel2 = new EntityModel<>(customerRest2);
+		Collection<CustomerRest> customerEntitiyModelCollection = new ArrayList<>();
+		customerEntitiyModelCollection.add(CUSTOMER_REST);
+		customerEntitiyModelCollection.add(customerRest2);
 
-		Collection<EntityModel<CustomerRest>> customerEntitiyModelCollection = new ArrayList<>();
-		customerEntitiyModelCollection.add(customerEntityModel1);
-		customerEntitiyModelCollection.add(customerEntityModel2);
-
-		PagedModel<EntityModel<CustomerRest>> customersPagedModel = new PagedModel<>(customerEntitiyModelCollection,null);
+		D4iPageRest<CustomerRest> customersPagedModel = new D4iPageRest<>(customerEntitiyModelCollection.toArray(CustomerRest[]::new),
+																		  new D4iPaginationInfo(page, size, 1));
 		Mockito.when(customerService.getAllCustomers(any(Pageable.class),any(PagedResourcesAssembler.class))).thenReturn(customersPagedModel);
 
 		// when
-		SalesResponse<PagedModel<EntityModel<CustomerRest>>> response = customerControllerRestImpl.getAllCustomers(page,size,pageable,assembler);
+		SalesResponse<D4iPageRest<CustomerRest>> response = customerControllerRestImpl.getAllCustomers(page,size,pageable,assembler);
 
 		// then
 		assertNotNull(response);
