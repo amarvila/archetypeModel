@@ -135,12 +135,6 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${mapStruct.version}</version>
 		</dependency>
-		<!-- Model Mapper -->
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>${modelmapper.version}</version>
-		</dependency>
 		<!-- JackSon -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

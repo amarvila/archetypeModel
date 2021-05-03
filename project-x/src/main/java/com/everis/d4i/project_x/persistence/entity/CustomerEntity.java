@@ -7,15 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @Entity
 @Table(name = "entity")
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 public class CustomerEntity extends CommonAuditEntity {
 
     private static final long serialVersionUID = 1L;
