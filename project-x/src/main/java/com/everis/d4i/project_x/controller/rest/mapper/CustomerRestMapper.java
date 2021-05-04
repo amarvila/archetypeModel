@@ -14,4 +14,5 @@ public class CustomerRestMapper implements RestMapper<CustomerRest, CustomerDto>
     public CustomerDto mapToDto(final CustomerRest rest) {
         return new CustomerDto(rest.getId(), rest.getCode(), rest.getDescription());
     }
+
 }

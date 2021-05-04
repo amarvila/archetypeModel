@@ -1,8 +1,10 @@
 package com.everis.d4i.project_x.service.impl;
 
+import com.everis.d4i.project_x.controller.rest.mapper.CustomerRestMapper;
 import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
 import com.everis.d4i.project_x.controller.rest.model.D4iPaginationInfo;
-import org.modelmapper.ModelMapper;
+import com.everis.d4i.project_x.persistence.mapper.CustomerEntityMapper;
+import com.everis.d4i.project_x.service.model.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +27,16 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerRepository customerRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    CustomerRestMapper customerRestMapper;
+
+    @Autowired
+    CustomerEntityMapper customerEntityMapper;
 
     @Override
     public D4iPageRest<CustomerRest> getAllCustomers(final Pageable pageable,
                                                      final PagedResourcesAssembler<CustomerRest> assembler) throws SalesException {
-	Page<CustomerEntity> customerPage = customerRepository.findAll(pageable);
-	Page<CustomerRest> customerRestList = customerPage.map(customer -> modelMapper.map(customer, CustomerRest.class));
+	Page<CustomerDto> customerPage = customerRepository.findAll(pageable).map(customerEntity -> customerEntityMapper.mapToDto(customerEntity));
+	Page<CustomerRest> customerRestList = customerPage.map(customer -> customerRestMapper.mapToRest(customer));
 	return new D4iPageRest<>(customerRestList.getContent().toArray(CustomerRest[]::new),
                              new D4iPaginationInfo(customerRestList.getNumber(),
                                                    pageable.getPageSize(),
@@ -40,23 +45,27 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerRest createCustomer(final CustomerRest customerRest) throws SalesException {
-	CustomerEntity customerEntity = modelMapper.map(customerRest, CustomerEntity.class);
-	return modelMapper.map(customerRepository.save(customerEntity), CustomerRest.class);
+	CustomerDto customerDto = customerRestMapper.mapToDto(customerRest);
+	CustomerEntity customerEntity = customerRepository.save(customerEntityMapper.mapToEntity(customerDto));
+	CustomerDto customerDtoToReturn = customerEntityMapper.mapToDto(customerEntity);
+	return customerRestMapper.mapToRest(customerDtoToReturn);
     }
 
     @Override
     public CustomerRest getCustomerById(final Long id) throws SalesException {
 	CustomerEntity customer = customerRepository.findById(id)
 		.orElseThrow(() -> new SalesNotFoundException(new ErrorDto(ExceptionConstantsUtils.NOT_FOUND_GENERIC)));
-	return modelMapper.map(customer, CustomerRest.class);
+	CustomerDto customerDto = customerEntityMapper.mapToDto(customer);
+	return customerRestMapper.mapToRest(customerDto);
     }
 
     @Override
     public CustomerRest updateCustomer(final CustomerRest customerRest) throws SalesException {
 	CustomerEntity customer = customerRepository.findById(customerRest.getId())
 		.orElseThrow(() -> new SalesNotFoundException(new ErrorDto(ExceptionConstantsUtils.NOT_FOUND_GENERIC)));
-
-	return modelMapper.map(customerRepository.save(updateCustomer(customer, customerRest)), CustomerRest.class);
+	CustomerEntity customerEntity = customerRepository.save(updateCustomer(customer, customerRest));
+	CustomerDto customerDto = customerEntityMapper.mapToDto(customerEntity);
+	return customerRestMapper.mapToRest(customerDto);
     }
 
     @Override
