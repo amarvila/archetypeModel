@@ -2,12 +2,21 @@ package com.everis.d4i.project_x.services.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 
+import com.everis.d4i.project_x.controller.rest.mapper.CustomerRestMapper;
+import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
+import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
+import com.everis.d4i.project_x.exception.SalesException;
+import com.everis.d4i.project_x.exception.SalesNotFoundException;
+import com.everis.d4i.project_x.persistence.entity.CustomerEntity;
+import com.everis.d4i.project_x.persistence.mapper.CustomerEntityMapper;
+import com.everis.d4i.project_x.persistence.repository.CustomerRepository;
+import com.everis.d4i.project_x.service.impl.CustomerServiceImpl;
+import com.everis.d4i.project_x.service.model.CustomerDto;
 import java.util.List;
 import java.util.Optional;
-
-import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,25 +24,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
-import com.everis.d4i.project_x.exception.SalesException;
-import com.everis.d4i.project_x.exception.SalesNotFoundException;
-import com.everis.d4i.project_x.persistence.entity.CustomerEntity;
-import com.everis.d4i.project_x.persistence.repository.CustomerRepository;
-import com.everis.d4i.project_x.service.impl.CustomerServiceImpl;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -42,12 +40,16 @@ public class CustomerServiceImplTest {
 	static final Long ID = 1L;
 	static final CustomerEntity CUSTOMER_ENTITY = new CustomerEntity();
 	static final CustomerRest CUSTOMER_REST = new CustomerRest();
+	static final CustomerDto CUSTOMER_DTO = new CustomerDto();
 
     @Mock
     private CustomerRepository customerRepository;
 
     @Mock
-    private ModelMapper modelMapper;
+    private CustomerRestMapper customerRestMapper;
+
+    @Mock
+    private CustomerEntityMapper customerEntityMapper;
 
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -56,11 +58,14 @@ public class CustomerServiceImplTest {
     public void init() {
 	 MockitoAnnotations.initMocks(this);
 		CUSTOMER_ENTITY.setId(ID);
+		CUSTOMER_DTO.setId(ID);
 		CUSTOMER_REST.setId(ID);
 
 		Mockito.when(customerRepository.findById(anyLong())).thenReturn(Optional.of(CUSTOMER_ENTITY));
-		Mockito.when(modelMapper.map(any(CustomerEntity.class), eq(CustomerRest.class))).thenReturn(CUSTOMER_REST);
-		Mockito.when(modelMapper.map(any(CustomerRest.class),eq(CustomerEntity.class))).thenReturn(CUSTOMER_ENTITY);
+		Mockito.when(customerRestMapper.mapToRest(any(CustomerDto.class))).thenReturn(CUSTOMER_REST);
+		Mockito.when(customerRestMapper.mapToDto(any(CustomerRest.class))).thenReturn(CUSTOMER_DTO);
+		Mockito.when(customerEntityMapper.mapToEntity(any(CustomerDto.class))).thenReturn(CUSTOMER_ENTITY);
+		Mockito.when(customerEntityMapper.mapToDto(any(CustomerEntity.class))).thenReturn(CUSTOMER_DTO);
 
 	}
 
