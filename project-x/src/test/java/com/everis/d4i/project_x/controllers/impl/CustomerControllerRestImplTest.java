@@ -26,8 +26,6 @@ import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -69,13 +67,6 @@ public class CustomerControllerRestImplTest {
         HateoasPageableHandlerMethodArgumentResolver resolver = new HateoasPageableHandlerMethodArgumentResolver();
         PagedResourcesAssembler<CustomerRest> assembler = new PagedResourcesAssembler<>(resolver, null);
 
-        CustomerRest customerRest2 = new CustomerRest();
-        customerRest2.setId(2L);
-
-        Collection<CustomerRest> customerEntitiyModelCollection = new ArrayList<>();
-        customerEntitiyModelCollection.add(CUSTOMER_REST);
-        customerEntitiyModelCollection.add(customerRest2);
-
         Page<CustomerDto> customersPagedModel = new PageImpl<>(List.of(new CustomerDto()));
         Mockito.when(customerService.getAllCustomers(any(Pageable.class), any(PagedResourcesAssembler.class))).thenReturn(customersPagedModel);
         Mockito.when(customerRestMapper.mapToRest(any(CustomerDto.class))).thenReturn(CUSTOMER_REST);
@@ -104,7 +95,8 @@ public class CustomerControllerRestImplTest {
 
     @Test
     public void createCustomerTest() throws SalesException {
-        Mockito.when(customerService.createCustomer(any(CustomerRest.class))).thenReturn(CUSTOMER_DTO);
+        Mockito.when(customerService.createCustomer(any(CustomerDto.class))).thenReturn(CUSTOMER_DTO);
+        Mockito.when(customerRestMapper.mapToDto(any(CustomerRest.class))).thenReturn(CUSTOMER_DTO);
         Mockito.when(customerRestMapper.mapToRest(any(CustomerDto.class))).thenReturn(CUSTOMER_REST);
 
         SalesResponse<CustomerRest> response = customerControllerRestImpl.createCustomer(CUSTOMER_REST);
@@ -128,8 +120,7 @@ public class CustomerControllerRestImplTest {
     public void updateCustomerTest() throws SalesException {
         CustomerDto customerDtoModified = new CustomerDto();
         customerDtoModified.setId(2L);
-        Mockito.when(customerService.updateCustomer(any(CustomerRest.class))).thenReturn(customerDtoModified);
-        Mockito.when(customerRestMapper.mapToRest(any(CustomerDto.class))).thenReturn(CUSTOMER_REST);
+        Mockito.when(customerService.updateCustomer(any(CustomerDto.class))).thenReturn(customerDtoModified);
 
         SalesResponse<CustomerRest> response = customerControllerRestImpl.updateCustomer(CUSTOMER_REST);
 

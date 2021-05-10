@@ -94,7 +94,7 @@ public class CustomerServiceImplTest {
     public void createCustomerTest() throws SalesException {
         Mockito.when(customerRepository.save(CUSTOMER_ENTITY)).thenReturn(CUSTOMER_ENTITY);
 
-        CustomerDto customerDtoOut = customerService.createCustomer(CUSTOMER_REST);
+        CustomerDto customerDtoOut = customerService.createCustomer(CUSTOMER_DTO);
 
         assertEquals(CUSTOMER_DTO, customerDtoOut);
         Mockito.verify(customerRepository, Mockito.times(1)).save(Mockito.any(CustomerEntity.class));
@@ -104,7 +104,7 @@ public class CustomerServiceImplTest {
     public void updateCustomerTest() throws SalesException {
         Mockito.when(customerRepository.save(any())).thenReturn(CUSTOMER_ENTITY);
 
-        CustomerDto customerDtoOut = customerService.updateCustomer(CUSTOMER_REST);
+        CustomerDto customerDtoOut = customerService.updateCustomer(CUSTOMER_DTO);
         assertEquals(CUSTOMER_DTO, customerDtoOut);
         Mockito.verify(customerRepository, Mockito.times(1)).save(Mockito.any(CustomerEntity.class));
     }
@@ -114,7 +114,7 @@ public class CustomerServiceImplTest {
 
         Mockito.when(customerRepository.findById(ID)).thenReturn(Optional.empty());
 
-        customerService.updateCustomer(CUSTOMER_REST);
+        customerService.updateCustomer(CUSTOMER_DTO);
     }
 
     @Test

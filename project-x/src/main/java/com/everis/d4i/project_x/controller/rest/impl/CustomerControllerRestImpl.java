@@ -34,7 +34,7 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
     private CustomerService customerService;
 
     @Autowired
-    CustomerRestMapper customerRestMapper;
+    private CustomerRestMapper customerRestMapper;
 
     @Override
     @ResponseStatus(HttpStatus.OK)
@@ -85,7 +85,7 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     public SalesResponse<CustomerRest> createCustomer(@RequestBody final CustomerRest customer) throws SalesException {
-        CustomerRest customerRest = customerRestMapper.mapToRest(customerService.createCustomer(customer));
+        CustomerRest customerRest = customerRestMapper.mapToRest(customerService.createCustomer(customerRestMapper.mapToDto(customer)));
         return new SalesResponse<>(HttpStatus.OK.toString(), String.valueOf(HttpStatus.OK.value()),
                 CommonConstantsUtils.OK, customerRest);
     }
@@ -102,7 +102,7 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
     @PatchMapping(value = RestConstantsUtils.RESOURCE_CUSTOMER)
     public SalesResponse<CustomerRest> updateCustomer(@RequestBody final CustomerRest customerRest) throws SalesException {
         return new SalesResponse<>(HttpStatus.OK.toString(), String.valueOf(HttpStatus.OK.value()),
-                CommonConstantsUtils.OK, customerRestMapper.mapToRest(customerService.updateCustomer(customerRest)));
+                CommonConstantsUtils.OK, customerRestMapper.mapToRest(customerService.updateCustomer(customerRestMapper.mapToDto(customerRest))));
     }
 
     @Override

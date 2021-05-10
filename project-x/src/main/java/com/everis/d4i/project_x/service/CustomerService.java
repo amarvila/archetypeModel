@@ -12,11 +12,11 @@ public interface CustomerService {
     Page<CustomerDto> getAllCustomers(Pageable pageable, PagedResourcesAssembler<CustomerRest> assembler)
             throws SalesException;
 
-    CustomerDto createCustomer(CustomerRest Customer) throws SalesException;
+    CustomerDto createCustomer(CustomerDto customer) throws SalesException;
 
     CustomerDto getCustomerById(Long id) throws SalesException;
 
-    CustomerDto updateCustomer(CustomerRest CustomerDetails) throws SalesException;
+    CustomerDto updateCustomer(CustomerDto customerDetails) throws SalesException;
 
     void deleteCustomer(Long id) throws SalesException;
 
