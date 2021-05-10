@@ -1,24 +1,22 @@
 package com.everis.d4i.project_x.service;
 
-import com.everis.d4i.project_x.controller.rest.model.D4iPageRest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.EntityModel;
-
 import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
 import com.everis.d4i.project_x.exception.SalesException;
+import com.everis.d4i.project_x.service.model.CustomerDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 
 public interface CustomerService {
 
-    D4iPageRest<CustomerRest> getAllCustomers(Pageable pageable, PagedResourcesAssembler<CustomerRest> assembler)
-	    throws SalesException;
+    Page<CustomerDto> getAllCustomers(Pageable pageable, PagedResourcesAssembler<CustomerRest> assembler)
+            throws SalesException;
 
-    CustomerRest createCustomer(CustomerRest Customer) throws SalesException;
+    CustomerDto createCustomer(CustomerRest Customer) throws SalesException;
 
-    CustomerRest getCustomerById(Long id) throws SalesException;
+    CustomerDto getCustomerById(Long id) throws SalesException;
 
-    CustomerRest updateCustomer(CustomerRest CustomerDetails) throws SalesException;
+    CustomerDto updateCustomer(CustomerRest CustomerDetails) throws SalesException;
 
     void deleteCustomer(Long id) throws SalesException;
 

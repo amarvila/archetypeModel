@@ -2,8 +2,10 @@ package com.everis.d4i.project_x.controller.rest.mapper;
 
 import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
 import com.everis.d4i.project_x.service.model.CustomerDto;
+import org.springframework.stereotype.Component;
 
-public class CustomerRestMapper implements RestMapper<CustomerRest, CustomerDto>{
+@Component
+public class CustomerRestMapper implements RestMapper<CustomerRest, CustomerDto> {
 
     @Override
     public CustomerRest mapToRest(final CustomerDto dto) {
