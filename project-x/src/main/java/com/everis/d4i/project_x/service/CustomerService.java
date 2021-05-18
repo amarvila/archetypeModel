@@ -1,15 +1,13 @@
 package com.everis.d4i.project_x.service;
 
-import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
 import com.everis.d4i.project_x.exception.SalesException;
 import com.everis.d4i.project_x.service.model.CustomerDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 
 public interface CustomerService {
 
-    Page<CustomerDto> getAllCustomers(Pageable pageable, PagedResourcesAssembler<CustomerRest> assembler)
+    Page<CustomerDto> getAllCustomers(Pageable pageable)
             throws SalesException;
 
     CustomerDto createCustomer(CustomerDto customer) throws SalesException;

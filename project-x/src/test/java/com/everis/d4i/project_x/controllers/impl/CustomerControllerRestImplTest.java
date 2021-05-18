@@ -65,14 +65,13 @@ public class CustomerControllerRestImplTest {
         int pageNumber = 1;
         Pageable pageable = PageRequest.of(page, size);
         HateoasPageableHandlerMethodArgumentResolver resolver = new HateoasPageableHandlerMethodArgumentResolver();
-        PagedResourcesAssembler<CustomerRest> assembler = new PagedResourcesAssembler<>(resolver, null);
 
         Page<CustomerDto> customersPagedModel = new PageImpl<>(List.of(new CustomerDto()));
-        Mockito.when(customerService.getAllCustomers(any(Pageable.class), any(PagedResourcesAssembler.class))).thenReturn(customersPagedModel);
+        Mockito.when(customerService.getAllCustomers(any(Pageable.class))).thenReturn(customersPagedModel);
         Mockito.when(customerRestMapper.mapToRest(any(CustomerDto.class))).thenReturn(CUSTOMER_REST);
 
         // when
-        SalesResponse<D4iPageRest<CustomerRest>> response = customerControllerRestImpl.getAllCustomers(page, size, pageable, assembler);
+        SalesResponse<D4iPageRest<CustomerRest>> response = customerControllerRestImpl.getAllCustomers(page, size, pageable);
 
         // then
         assertNotNull(response);

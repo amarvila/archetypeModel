@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -48,15 +47,16 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
     public SalesResponse<D4iPageRest<CustomerRest>> getAllCustomers(
             @RequestParam(defaultValue = CommonConstantsUtils.ZERO) final int page,
             @RequestParam(defaultValue = CommonConstantsUtils.TWENTY) final int size,
-            @Parameter(hidden = true) final Pageable pageable,
-            @Parameter(hidden = true) final PagedResourcesAssembler<CustomerRest> assembler) throws SalesException {
+            @Parameter(hidden = true) final Pageable pageable) throws SalesException {
         Page<CustomerRest> customerRestList =
-                customerService.getAllCustomers(pageable, assembler).map(customer -> customerRestMapper.mapToRest(customer));
-        return new SalesResponse<>(HttpStatus.OK.toString(), String.valueOf(HttpStatus.OK.value()),
-                CommonConstantsUtils.OK, new D4iPageRest<>(customerRestList.getContent().toArray(CustomerRest[]::new),
-                new D4iPaginationInfo(customerRestList.getNumber(),
-                        pageable.getPageSize(),
-                        customerRestList.getTotalPages())));
+                customerService.getAllCustomers(pageable).map(customer -> customerRestMapper.mapToRest(customer));
+        return new SalesResponse<>(HttpStatus.OK.toString(),
+                                   String.valueOf(HttpStatus.OK.value()),
+                                   CommonConstantsUtils.OK,
+                                   new D4iPageRest<>(customerRestList.getContent().toArray(CustomerRest[]::new),
+                                                     new D4iPaginationInfo(customerRestList.getNumber(),
+                                                                           pageable.getPageSize(),
+                                                                           customerRestList.getTotalPages())));
     }
 
     @Override
@@ -69,10 +69,12 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     @GetMapping(value = RestConstantsUtils.RESOURCE_CUSTOMER + RestConstantsUtils.RESOURCE_CUSTOMERID)
-    public SalesResponse<CustomerRest> getCustomerById(@PathVariable(value = RestConstantsUtils.CUSTOMERID) final Long id)
+    public SalesResponse<CustomerRest> getCustomerById(
+            @PathVariable(value = RestConstantsUtils.CUSTOMERID) final Long id)
             throws SalesException {
         return new SalesResponse<>(HttpStatus.OK.toString(), String.valueOf(HttpStatus.OK.value()),
-                CommonConstantsUtils.OK, customerRestMapper.mapToRest(customerService.getCustomerById(id)));
+                                   CommonConstantsUtils.OK,
+                                   customerRestMapper.mapToRest(customerService.getCustomerById(id)));
     }
 
     @Override
@@ -85,9 +87,10 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     public SalesResponse<CustomerRest> createCustomer(@RequestBody final CustomerRest customer) throws SalesException {
-        CustomerRest customerRest = customerRestMapper.mapToRest(customerService.createCustomer(customerRestMapper.mapToDto(customer)));
+        CustomerRest customerRest = customerRestMapper.mapToRest(
+                customerService.createCustomer(customerRestMapper.mapToDto(customer)));
         return new SalesResponse<>(HttpStatus.OK.toString(), String.valueOf(HttpStatus.OK.value()),
-                CommonConstantsUtils.OK, customerRest);
+                                   CommonConstantsUtils.OK, customerRest);
     }
 
     @Override
@@ -99,10 +102,12 @@ public class CustomerControllerRestImpl implements CustomerControllerRest {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
-    @PatchMapping(value = RestConstantsUtils.RESOURCE_CUSTOMER)
-    public SalesResponse<CustomerRest> updateCustomer(@RequestBody final CustomerRest customerRest) throws SalesException {
+    @PutMapping(value = RestConstantsUtils.RESOURCE_CUSTOMER)
+    public SalesResponse<CustomerRest> updateCustomer(
+            @RequestBody final CustomerRest customerRest) throws SalesException {
         return new SalesResponse<>(HttpStatus.OK.toString(), String.valueOf(HttpStatus.OK.value()),
-                CommonConstantsUtils.OK, customerRestMapper.mapToRest(customerService.updateCustomer(customerRestMapper.mapToDto(customerRest))));
+                                   CommonConstantsUtils.OK, customerRestMapper.mapToRest(
+                customerService.updateCustomer(customerRestMapper.mapToDto(customerRest))));
     }
 
     @Override

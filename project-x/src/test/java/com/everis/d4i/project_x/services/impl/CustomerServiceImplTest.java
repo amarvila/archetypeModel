@@ -78,7 +78,7 @@ public class CustomerServiceImplTest {
         Page<CustomerEntity> customerPage = new PageImpl<>(List.of(CUSTOMER_ENTITY), pageable, 0);
         Mockito.when(customerRepository.findAll(any(Pageable.class))).thenReturn(customerPage);
 
-        Page<CustomerDto> pagedModel = customerService.getAllCustomers(pageable, assembler);
+        Page<CustomerDto> pagedModel = customerService.getAllCustomers(pageable);
 
         assertNotNull(pagedModel);
     }
