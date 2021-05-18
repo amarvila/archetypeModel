@@ -1,19 +1,15 @@
 package com.everis.d4i.project_x.controller.rest.mapper;
 
-import static org.junit.Assert.assertEquals;
-
+import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
+import com.everis.d4i.project_x.service.model.CustomerDto;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import com.everis.d4i.project_x.controller.rest.model.CustomerRest;
-import com.everis.d4i.project_x.service.model.CustomerDto;
+import static org.junit.Assert.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CustomerRestMapperTest {
 
 	@InjectMocks
@@ -30,7 +26,7 @@ public class CustomerRestMapperTest {
 		String code = "0000";
 		String description = "ABC";
 
-		CustomerDto customerDto = Mockito.mock(CustomerDto.class, Mockito.RETURNS_DEEP_STUBS);
+		CustomerDto customerDto = Mockito.mock(CustomerDto.class);
 
 		Mockito.when(customerDto.getId()).thenReturn(id);
 		Mockito.when(customerDto.getCode()).thenReturn(code);
@@ -50,7 +46,7 @@ public class CustomerRestMapperTest {
 		String code = "0000";
 		String description = "ABC";
 
-		CustomerRest customerRest = Mockito.mock(CustomerRest.class, Mockito.RETURNS_DEEP_STUBS);
+		CustomerRest customerRest = Mockito.mock(CustomerRest.class);
 
 		Mockito.when(customerRest.getId()).thenReturn(id);
 		Mockito.when(customerRest.getCode()).thenReturn(code);

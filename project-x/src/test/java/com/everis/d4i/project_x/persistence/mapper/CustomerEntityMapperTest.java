@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.everis.d4i.project_x.persistence.entity.CustomerEntity;
 import com.everis.d4i.project_x.service.model.CustomerDto;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class CustomerEntityMapperTest {
 
 	@InjectMocks
@@ -30,7 +30,7 @@ public class CustomerEntityMapperTest {
 		String code = "0000";
 		String description = "ABC";
 
-		CustomerDto customerDto = Mockito.mock(CustomerDto.class, Mockito.RETURNS_DEEP_STUBS);
+		CustomerDto customerDto = Mockito.mock(CustomerDto.class);
 
 		Mockito.when(customerDto.getId()).thenReturn(id);
 		Mockito.when(customerDto.getCode()).thenReturn(code);
@@ -49,7 +49,7 @@ public class CustomerEntityMapperTest {
 		String code = "0000";
 		String description = "ABC";
 
-		CustomerEntity customerEntity = Mockito.mock(CustomerEntity.class, Mockito.RETURNS_DEEP_STUBS);
+		CustomerEntity customerEntity = Mockito.mock(CustomerEntity.class);
 
 		Mockito.when(customerEntity.getId()).thenReturn(id);
 		Mockito.when(customerEntity.getCode()).thenReturn(code);
