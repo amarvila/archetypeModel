@@ -7,4 +7,5 @@ public interface RestMapper<R extends Serializable, D extends Serializable> {
 	R mapToRest(D dto);
 
 	D mapToDto(R rest);
+
 }
